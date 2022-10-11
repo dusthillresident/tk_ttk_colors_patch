@@ -1,0 +1,25 @@
+# Abstract
+
+When the 'default' ttk theme is in use, allow the ttk widgets to follow the user's chosen color scheme (set via X resources) and the script writer's choice of color scheme (set via the command 'tk_setPalette')
+
+# Background & Rationale
+
+Tk currently gives users some limited customisation of the color palette by setting X resources. Script writers can also specify a palette via the command 'tk_setPalette'.
+
+This user/scripter specified palette is only applied to the original Tk widgets; the ttk widgets use separate colors defined by the current ttk theme. In the case of the 'default' ttk theme, it's a bright white and grey palette.
+
+Users who want to use custom color palettes find this jarring and aesthetically displeasing.
+
+It's also a cause of usability issues; currently, attempting to set a 'night mode' style color scheme (bright foreground, dark background) renders some parts of Tk unusable where bright text is put on a bright background -- tk::IconList (a component of the file chooser) uses the user's choice of foreground but the background color is hardcoded 'white'.
+
+# Specification
+
+The 'default' ttk theme is initialised with the user's chosen color options. If the user hasn't specified any color options, the 'default' theme's original colors are used.
+
+tk::IconList is adjusted so that it uses appropriate foreground and background colors that match the current ttk theme.
+
+A procedure ttk::theme::default::reconfigureDefaultTheme is added which is called to initialise the 'default' theme, and is called by tk_setPalette to update the colors of the ttk widgets as necessary, ensuring that the color palette is always consistent when the 'default' ttk theme is in use.
+
+# Copyright
+
+This document has been placed in the public domain.
