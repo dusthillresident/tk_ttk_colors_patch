@@ -1,0 +1,122 @@
+
+====================
+=== iconlist.tcl ===
+====================
+
+380c380
+< 	$canvas itemconfigure selectionText -fill black
+---
+> 	$canvas itemconfigure selectionText -fill $fill
+408c408,409
+< 			-width 400 -height 120 -background white]
+---
+> 			-width 400 -height 120\
+> 			-background [ttk::style lookup Treeview -background {} white]]
+425,430c426
+< 	set fg [option get $canvas foreground Foreground]
+< 	if {$fg eq ""} {
+< 	    set fill black
+< 	} else {
+< 	    set fill $fg
+< 	}
+---
+> 	set fill [ttk::style lookup Treeview -foreground {} black]
+
+====================
+=== palette.tcl ===
+====================
+
+141a142,153
+>     
+>     # Update the 'default' ttk theme in order to apply the
+>     # new palette to the ttk widgets.
+>     
+>     foreach option [array names new] {    
+> 	if {[info exists ttk::theme::default::colorOptionLookup($option)]} {
+> 	    foreach colorName $ttk::theme::default::colorOptionLookup($option) {
+> 		set ttk::theme::default::colors($colorName) $new($option)
+> 	    }
+> 	}
+>     }
+>     ttk::theme::default::reconfigureDefaultTheme
+
+====================
+=== ttk/defaults.tcl ===
+====================
+
+21a22,68
+>     # On X11, if the user specifies their own choice of colour scheme via X resources,
+>     # then set the colour palette based on the user's choice.
+>     if {[tk windowingsystem] eq "x11"} {
+> 	foreach\
+> 	    xResourceName\
+>                  { {	background		Background		}
+>                  {	foreground		Foreground		}
+>                  {	background		Background		}
+>                  {	foreground		Foreground		}
+>                  {	activeBackground	ActiveBackground	}
+>                  {	selectBackground	SelectBackground	}
+>                  {	selectForeground	SelectForeground	}
+>                  {	troughColor		TroughColor		}
+>                  {	disabledForeground	DisabledForeground	}
+>                  {	selectBackground	SelectBackground	}
+>                  {	disabledForeground	DisabledForeground	}
+>                  {	selectBackground	SelectBackground	}
+>                  {	troughColor		TroughColor		} }\
+> 	    colorName\
+>                  { -frame -foreground -window -text
+>                  -activebg -selectbg -selectfg
+>                  -darker -disabledfg -indicator			
+>                  -disabledindicator -altindicator
+>                  -disabledaltindicator }\
+> 	{
+> 	    set color [eval option get . $xResourceName]
+> 	    if {$color ne ""} {
+>                  set colors($colorName) $color
+> 	    }
+> 	}
+>     }
+>     # This array is used to match up the tk widget options with the
+>     # corresponding values in the 'colors' array.
+>     # This is used by tk_setPalette to apply the new palette
+>     # to the ttk widgets.
+>     variable colorOptionLookup
+>     array set colorOptionLookup {
+> 	background		{-frame -window}
+> 	foreground		{-foreground -text}
+> 	activeBackground	-activebg
+> 	selectBackground	{-selectbg -indicator -altindicator}
+> 	selectForeground	-selectfg
+> 	troughColor		{-darker -disabledaltindicator}
+> 	disabledForeground	{-disabledfg -disabledindicator}
+>     }
+> }
+> 
+22a70,81
+> # ttk::theme::default::reconfigureDefaultTheme --
+> # This procedure contains the definition of the 'default' theme itself.
+> # The theme definition is in a procedure, so it can be re-called
+> # when required, enabling tk_setPalette to set the colours
+> # of the ttk widgets.
+> #
+> # Arguments:
+> # None.
+> 
+> proc ttk::theme::default::reconfigureDefaultTheme {} {
+>     upvar ttk::theme::default::colors colors
+>     # The definition of the 'default' theme.
+49c108
+< 	    -indicatorcolor "#ffffff" -indicatorrelief sunken -padding 1
+---
+> 	    -indicatorcolor $colors(-window) -indicatorrelief sunken -padding 1
+60c119
+< 	    -indicatorcolor "#ffffff" -indicatorrelief sunken -padding 1
+---
+> 	    -indicatorcolor $colors(-window) -indicatorrelief sunken -padding 1
+74c133
+< 	    -relief sunken -fieldbackground white -padding 1
+---
+> 	    -relief sunken -fieldbackground $colors(-window) -padding 1
+143a203,204
+> 
+> ttk::theme::default::reconfigureDefaultTheme
