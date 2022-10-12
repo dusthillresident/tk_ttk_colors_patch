@@ -117,6 +117,18 @@
 < 	    -relief sunken -fieldbackground white -padding 1
 ---
 > 	    -relief sunken -fieldbackground $colors(-window) -padding 1
+81c140
+< 	    -arrowcolor [list disabled $colors(-disabledfg)]
+---
+> 	    -arrowcolor [list disabled $colors(-disabledfg) !disabled $colors(-text)]
+86c145
+< 	    -arrowcolor [list disabled $colors(-disabledfg)]
+---
+> 	    -arrowcolor [list disabled $colors(-disabledfg) !disabled $colors(-text)]
+94c153
+< 	    -arrowcolor [list disabled $colors(-disabledfg)]
+---
+> 	    -arrowcolor [list disabled $colors(-disabledfg) !disabled $colors(-text)]
 143a203,204
 > 
 > ttk::theme::default::reconfigureDefaultTheme
