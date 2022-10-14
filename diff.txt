@@ -1,7 +1,7 @@
 
-====================
-=== iconlist.tcl ===
-====================
+============================
+=== library/iconlist.tcl ===
+============================
 
 380c380
 < 	$canvas itemconfigure selectionText -fill black
@@ -22,9 +22,9 @@
 ---
 > 	set fill [ttk::style lookup Treeview -foreground {} black]
 
-===================
-=== palette.tcl ===
-===================
+===========================
+=== library/palette.tcl ===
+===========================
 
 141a142,157
 >     
@@ -44,9 +44,9 @@
 > 
 >     return
 
-========================
-=== ttk/defaults.tcl ===
-========================
+================================
+=== library/ttk/defaults.tcl ===
+================================
 
 21a22,68
 >     # On X11, if the user specifies their own choice of colour scheme via X resources,
