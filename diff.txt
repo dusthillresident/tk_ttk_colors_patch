@@ -1,7 +1,7 @@
 
-============================
-=== library/iconlist.tcl ===
-============================
+====================
+=== iconlist.tcl ===
+====================
 
 380c380
 < 	$canvas itemconfigure selectionText -fill black
@@ -22,14 +22,15 @@
 ---
 > 	set fill [ttk::style lookup Treeview -foreground {} black]
 
-===========================
-=== library/palette.tcl ===
-===========================
+===================
+=== palette.tcl ===
+===================
 
-141a142,153
+141a142,157
 >     
->     # Update the 'default' ttk theme in order to apply the
->     # new palette to the ttk widgets.
+>     # Update the 'default' ttk theme with the new palette,
+>     # and then set 'default' as the current ttk theme,
+>     # in order to apply the new palette to the ttk widgets.
 >     
 >     foreach option [array names new] {    
 > 	if {[info exists ttk::theme::default::colorOptionLookup($option)]} {
@@ -39,10 +40,13 @@
 > 	}
 >     }
 >     ttk::theme::default::reconfigureDefaultTheme
+>     ttk::setTheme default
+> 
+>     return
 
-================================
-=== library/ttk/defaults.tcl ===
-================================
+========================
+=== ttk/defaults.tcl ===
+========================
 
 21a22,68
 >     # On X11, if the user specifies their own choice of colour scheme via X resources,
