@@ -136,12 +136,12 @@ proc ttk::theme::default::reconfigureDefaultTheme {} {
 
 	ttk::style configure TCombobox -arrowsize 12 -padding 1
 	ttk::style map TCombobox -fieldbackground \
-	    [list readonly $colors(-frame) disabled $colors(-frame)] \
+	    [list readonly $colors(-frame) disabled $colors(-frame) !disabled $colors(-window)] \
 	    -arrowcolor [list disabled $colors(-disabledfg) !disabled $colors(-text)]
 
 	ttk::style configure TSpinbox -arrowsize 10 -padding {2 0 10 0}
 	ttk::style map TSpinbox -fieldbackground \
-	    [list readonly $colors(-frame) disabled $colors(-frame)] \
+	    [list readonly $colors(-frame) disabled $colors(-frame) !disabled $colors(-window)] \
 	    -arrowcolor [list disabled $colors(-disabledfg) !disabled $colors(-text)]
 
 	ttk::style configure TLabelframe \
@@ -167,9 +167,10 @@ proc ttk::theme::default::reconfigureDefaultTheme {} {
 	ttk::style configure Heading -font TkHeadingFont -relief raised
 	ttk::style configure Treeview \
 	    -background $colors(-window) \
-	    -foreground $colors(-text) ;
+	    -foreground $colors(-text) \
+	    -fieldbackground $colors(-window);
 	ttk::style map Treeview \
-	    -background [list disabled $colors(-frame)\
+	    -background [list disabled $colors(-frame) \
 				selected $colors(-selectbg)] \
 	    -foreground [list disabled $colors(-disabledfg) \
 				selected $colors(-selectfg)]
