@@ -37,6 +37,7 @@ pack [button .f.f1.b -text "Button"]\
 pack [scrollbar .f.f1.scr -orient horiz] -fill x
 pack [checkbutton .f.f1.cb -text "Checkbutton"]\
      [radiobutton .f.f1.rb -text "Radiobutton"]\
+     [spinbox .f.f1.sb]\
      [entry .f.f1.en]
 .f.f1.en insert 0 "Text entry"
 
@@ -50,9 +51,42 @@ pack [ttk::button .f.f2.b -text "Button"]\
 pack [ttk::scrollbar .f.f2.scr -orient horiz] -fill x
 pack [ttk::checkbutton .f.f2.cb -text "Checkbutton"]\
      [ttk::radiobutton .f.f2.rb -text "Radiobutton"]\
+     [ttk::spinbox .f.f2.sb]\
      [ttk::entry .f.f2.en]
 .f.f2.en insert 0 "Text entry"
 
 grid [label .f.l1 -text "Classic widgets"] [label .f.l2 -text "ttk widgets"]
 grid .f.f1 .f.f2
 pack .f
+
+
+toplevel .fullttk
+pack [ttk::notebook .fullttk.nb]
+foreach i { button checkbutton combobox entry frame intro label
+            labelframe menubutton notebook panedwindow progressbar
+            radiobutton scale scrollbar separator sizegrip spinbox treeview } {
+ frame .fullttk.nb.frame_$i -relief ridge -borderwidth 2 -padx 3 -pady 3
+ set widget ""
+ catch {set widget [ttk::$i .fullttk.nb.frame_$i.widget_$i]}
+ if {$widget eq ""} {
+  destroy .fullttk.nb.frame_$i
+  continue
+ }
+ .fullttk.nb add .fullttk.nb.frame_$i -text "$i"
+ destroy .fullttk.nb.frame_$i.widget_$i
+ set gridlist ""
+ foreach j {active disabled focus pressed selected background
+            readonly alternate invalid hover !disabled} {
+  frame .fullttk.nb.frame_$i.widgetstate_$j -padx 1 -pady 1 -relief sunken -borderwidth 1
+  pack [label .fullttk.nb.frame_$i.widgetstate_$j.label -text "($j)"]
+  pack [ttk::$i .fullttk.nb.frame_$i.widgetstate_$j.widget_$i]
+  if [catch {.fullttk.nb.frame_$i.widgetstate_$j.widget_$i state $j}] {
+   destroy .fullttk.nb.frame_$i.widgetstate_$j
+  } else {
+   lappend gridlist .fullttk.nb.frame_$i.widgetstate_$j
+  }
+ }
+ foreach {a b c} $gridlist {
+  eval grid $a $b $c
+ }
+}
