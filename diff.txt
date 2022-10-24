@@ -1,7 +1,7 @@
 
-============================
-=== library/iconlist.tcl ===
-============================
+====================
+=== iconlist.tcl ===
+====================
 
 380c380
 < 	$canvas itemconfigure selectionText -fill black
@@ -22,11 +22,26 @@
 ---
 > 	set fill [ttk::style lookup Treeview -foreground {} black]
 
-===========================
-=== library/palette.tcl ===
-===========================
+===================
+=== palette.tcl ===
+===================
 
-141a142,157
+73a74,87
+>     # 'buttonBackground' is the background color of the buttons in
+>     # the spinbox widget.
+>     if {![info exists new(buttonBackground)]} {
+> 	set new(buttonBackground) $new(background)
+>     }
+>     # 'selectColor' is the background of check & radio buttons.
+>     if {![info exists new(selectColor)]} {
+> 	foreach {r g b} $bg {break}
+> 	if {$r+1.5*$g+0.5*$b > 100000} {
+> 	    set new(selectColor) white
+> 	} else {
+> 	    set new(selectColor) black
+> 	}
+>     }
+141a156,171
 >     
 >     # Update the 'default' ttk theme with the new palette,
 >     # and then set 'default' as the current ttk theme,
@@ -44,9 +59,9 @@
 > 
 >     return
 
-================================
-=== library/ttk/defaults.tcl ===
-================================
+========================
+=== ttk/defaults.tcl ===
+========================
 
 21a22,68
 >     # On X11, if the user specifies their own choice of colour scheme via X resources,
@@ -121,18 +136,31 @@
 < 	    -relief sunken -fieldbackground white -padding 1
 ---
 > 	    -relief sunken -fieldbackground $colors(-window) -padding 1
-81c140
+80,81c139,140
+< 	    [list readonly $colors(-frame) disabled $colors(-frame)] \
 < 	    -arrowcolor [list disabled $colors(-disabledfg)]
 ---
+> 	    [list readonly $colors(-frame) disabled $colors(-frame) !disabled $colors(-window)] \
 > 	    -arrowcolor [list disabled $colors(-disabledfg) !disabled $colors(-text)]
-86c145
+85,86c144,145
+< 	    [list readonly $colors(-frame) disabled $colors(-frame)] \
 < 	    -arrowcolor [list disabled $colors(-disabledfg)]
 ---
+> 	    [list readonly $colors(-frame) disabled $colors(-frame) !disabled $colors(-window)] \
 > 	    -arrowcolor [list disabled $colors(-disabledfg) !disabled $colors(-text)]
 94c153
 < 	    -arrowcolor [list disabled $colors(-disabledfg)]
 ---
 > 	    -arrowcolor [list disabled $colors(-disabledfg) !disabled $colors(-text)]
-143a203,204
+111c170,171
+< 	    -foreground $colors(-text) ;
+---
+> 	    -foreground $colors(-text) \
+> 	    -fieldbackground $colors(-window);
+113c173
+< 	    -background [list disabled $colors(-frame)\
+---
+> 	    -background [list disabled $colors(-frame) \
+143a204,205
 > 
 > ttk::theme::default::reconfigureDefaultTheme
